@@ -12,5 +12,5 @@ The folder `reproducibility` contains the code for reproducing all of the experi
 3. Efficiency: Tables 4.2.1 and 4.2.2. Run the file `efficiency.py` and uncomment the code blocks corresponding to each table. To generate Table 4.2.2, in the `time_tests` function, also uncomment the lines pertaining to the L-test to get the L-test p-values and times.
 4. Robustness plots: Figures 4.3.1, 5.5.5, 5.5.6, 5.5.7, and 5.5.8. Note that the panels in Figure 4.3.1 are taken from those in the other figures listed in the manner described in its caption.
 5. HIV analysis: Figures 4.4.1 and 5.5.9. 
-6. Penalty tuning: Figures 5.4.1, 5.4.2, 5.4.3. 
+6. Penalty tuning: Figures 5.4.1, 5.4.2, and 5.4.3. 
 7. Visualizing fcn g: Figures 5.5.3 and 5.5.4. For the left panels of Figures 5.5.3 and 5.5.4, run files `viz_g_dim=2.py` and `viz_g_dim=3.py`, respectively. For the right panels corresponding to the high-dimensional setting, make the adjustments in the comments and run the same files.
