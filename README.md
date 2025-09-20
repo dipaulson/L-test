@@ -3,7 +3,7 @@
 This repository contains the source code for implementing all of the testing procedures and reproducing all of the figures presented in the [paper](https://arxiv.org/abs/2406.18390). The $L$-test is a new procedure for testing the signifiance of a subset of covariates in a Gaussian linear model with $n \geq d$. Under the same assumptions as the classical $F$-test, the L-test delivers the exact same statistical guarantees while achieving higher power when the coefficient vector $\beta$ is sparse.
 
 ## Example of methods application
-The file `tests_main.py` contains the main methods introduced in the paper, including the $L$-test, its computationally efficient variant the $R$-test, and the oracle test, which is used to provide power intuition. The file `utils.py` contains helper functions to implement these main methods, and `tests_support.py` contains additional tests we consider in the paper. Below, we walk through a few examples of how a user can apply our methods.
+The file `tests_main.py` contains the main methods introduced in the paper, including the $L$-test, its computationally efficient variant the $R$-test, and the oracle test, which is used to provide power intuition. The file `utils.py` contains helper functions to implement these main methods, and `tests_support.py` contains additional tests considered in the paper. Below, we walk through a few examples of how a user can apply our methods.
 
 ```python
 from tests_main import *
