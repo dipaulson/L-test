@@ -39,7 +39,7 @@ L_pval = L_test(y, X, k)
 
 """
 For precise p-values, users can either increase the number of Monte Carlo samples
-used to compute the L-test p-value or run the efficient R-test, which does not require resampling.
+used to compute the L-test p-value or run the efficient R-test, which does not use resampling.
 """
 
 L_pval = L_test(y, X, k, MC=500)
