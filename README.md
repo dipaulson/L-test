@@ -2,7 +2,7 @@
 
 This repository contains the source code for implementing all of the testing procedures and reproducing all of the figures presented in the [paper](https://arxiv.org/abs/2406.18390). The $L$-test is a new procedure for testing the signifiance of a subset of covariates in a Gaussian linear model with $n \geq d$. Under the same assumptions as the classical $F$-test, the L-test delivers the exact same statistical guarantees while achieving higher power when the coefficient vector $\beta$ is sparse.
 
-## Example applying methods
+## Example of methods application
 The file `tests_main.py` contains the main methods introduced in the paper, including the $L$-test, its computationally efficient variant the $R$-test, and the oracle test, which is used to provide power intuition. The file `utils.py` contains helper functions to implement these main methods, and `tests_support.py` contains additional tests we consider in the paper. Below, we walk through a few examples of how a user can apply our methods.
 
 ```python
@@ -12,6 +12,7 @@ import numpy as np
 
 np.random.seed(1)
 
+# Set parameters
 n = 100
 d = 50
 k = 10
@@ -30,7 +31,9 @@ P_k = proj(X[:,k:])
 y_hat = P_k @ y
 sigma = np.linalg.norm(y - P_k@y)
 
-# Run tests
+"""
+Below, we run the oracle and L-test. All tests assess the signifiance of the first k covariates.
+"""
 oracle_pval = oracle_test(y, X, k, beta[0:k] / np.linalg.norm(beta[0:k])) # Oracle-test for H_k
 L_pval = L_test(y, X, k) # L-test for H_k
 
@@ -39,13 +42,15 @@ For precise p-values, users can either increase the number of MC sims
 in the L-test p-value or use the analytic p-value corresponding to the 
 recentered u-test.
 """
+
 L_pval = L_test(y, X, k, MC=500)
 R_pval = R_test(y, X, k)
 
 """
 To run the tests with the same penalty parameter, users can generate the
-penalty separately and then set it in the hypothesis test function specs.
+penalty separately and then specify it as an input.
 """
+
 u = np.random.randn(n - d + k)
 u /= np.linalg.norm(u)
 y_tilde = y_hat + sigma * V @ u
