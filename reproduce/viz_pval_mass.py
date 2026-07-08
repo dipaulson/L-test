@@ -216,7 +216,7 @@ def make_heatmaps(sig, spars_1, spars_2, corr):
         L_heatmap(u_obs, center, axes, angle, f"$p={L_pval:.4f}$", f"L_iteration_{i}")
 
 """
-Uncomment to get plots for high correlation setting.
+Uncomment to get plots for low correlation setting.
 """
 # make_heatmaps(0.3, 2, 5, 0.0)
 
