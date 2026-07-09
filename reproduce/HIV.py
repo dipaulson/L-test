@@ -74,7 +74,7 @@ def HIV_pvals(X, y):
         t2 = time.time()
         glasso_pval = gLASSO(y, X_adj, k, penalty = l)
         t3 = time.time()
-        L_pval = L_test(y, X_adj, k, penalty = l, point = estimate, MC=5000) 
+        L_pval = L_test(y, X_adj, k, penalty = l, point = estimate) 
         t4 = time.time()
         MCfree_pval = MC_free(y, X_adj, k, penalty = l, point = estimate)
         t5 = time.time()
