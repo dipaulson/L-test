@@ -79,7 +79,7 @@ def run_tests(alpha=0.05):
     for i in range(its_per_job):
         for j in range(num_points):
             # Generate data
-            X = generate_design(n[j], d[j], corr[j])
+            X = generate_design(n[j], d[j], k[j], corr[j])
             beta = generate_beta(d[j], k[j], signal[j], sparsity_1[j], sparsity_2[j])
             y = np.random.multivariate_normal(X@beta, np.eye(n[j]))
             V = construct_V(X, k[j])
