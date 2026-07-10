@@ -155,8 +155,6 @@ def sgLASSO(y, X, k, MC = 200):
             count += 1
     return (1 + count) / (MC + 1)
 
-
-# Standard LASSO test p-value
 def LASSO(y, X, k, MC = 200):
     n, d = X.shape
     m = n - d + k
