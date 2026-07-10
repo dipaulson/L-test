@@ -7,7 +7,7 @@ from sklearn.linear_model import Lasso, ElasticNet, LassoCV, ElasticNetCV
 from sklearn.model_selection import GridSearchCV
 from sklearn.decomposition import PCA
 from scipy.stats import f
-from asgl import Regressor
+from groupyr import SGL, SGLCV
 
 def F_test(y, X, k):
     n, d = X.shape
