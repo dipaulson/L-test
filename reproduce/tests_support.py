@@ -105,29 +105,40 @@ def bonf_ell(y, X, k, seed, r_script_path="l_testing.R"):
 def sgLASSO(y, X, k, MC = 200):
     n, d = X.shape
     m = n - d + k
-    group_index = np.zeros(d) 
-    group_index[k:] = np.arange(1, d-k+1)
+    groups = [np.arange(k)]
+    groups += [np.array([j]) for j in range(k, d)]
     V = construct_V(X, k)
-    P_k = proj(X[:,k:])
+    P_k = proj(X[:, k:])
     y_hat = P_k @ y
-    sigma = np.linalg.norm(y - P_k@y)
+    sigma = np.linalg.norm(y - P_k @ y)
 
-    # Set penalties
+    # Cross-validate sparse group lasso parameters
     u = np.random.randn(m)
     u /= np.linalg.norm(u)
     y_tilde = y_hat + sigma * V @ u
-    # Custom CV step following recommendation of asgl package: https://github.com/alvaromc317/asgl/blob/9631bcdb55d0245274fca4d80d7e7f064965c9e9/user_guide.ipynb
-    model = Regressor(model='lm', penalization='sgl', fit_intercept=False)
-    param_grid = {'lambda1': [1e-4, 1e-3, 1e-2, 1e-1, 1], 'alpha': [.1, .5, .7, .9, .95, .99, 1]}
-    gscv = GridSearchCV(model, param_grid, scoring='neg_median_absolute_error', cv=10)
-    gscv.fit(X, y_tilde, **{'group_index': group_index})
-    l1 = gscv.best_params_['lambda1']
-    a = gscv.best_params_['alpha']
 
-    model = Regressor(model='lm', penalization='sgl', fit_intercept=False, lambda1=l1, alpha=a)
-    model.fit(X, y, group_index=group_index)
-    beta_k = model.coef_[0:k]
-    M = V[:,:k].T @ X[:,:k]
+    cv_model = SGLCV(
+        l1_ratio=[0.1, 0.5, 0.7, 0.9, 0.95, 0.99, 1.0],
+        groups=groups,
+        scale_l2_by=None,
+        fit_intercept=False,
+        cv=10
+    )
+
+    cv_model.fit(X, y_tilde)
+    alpha = cv_model.alpha_
+    l1_ratio = cv_model.l1_ratio_
+
+    model = SGL(
+        l1_ratio=l1_ratio,
+        alpha=alpha,
+        groups=groups,
+        scale_l2_by=None,
+        fit_intercept=False
+    )
+    model.fit(X, y)
+    beta_k = model.coef_[:k]
+    M = V[:, :k].T @ X[:, :k]
 
     # Test statistic
     test_stat = np.linalg.norm(M @ beta_k)
@@ -138,9 +149,9 @@ def sgLASSO(y, X, k, MC = 200):
     Y_tilde = y_hat[:, np.newaxis] + sigma * (V @ U)
     count = 0
     for i in range(MC):
-        model.fit(X, Y_tilde[:, i], group_index=group_index)
-        beta_k = model.coef_[0:k]
-        if (np.linalg.norm(M @ beta_k) >= test_stat):
+        model.fit(X, Y_tilde[:, i])
+        beta_k = model.coef_[:k]
+        if np.linalg.norm(M @ beta_k) >= test_stat:
             count += 1
     return (1 + count) / (MC + 1)
 
